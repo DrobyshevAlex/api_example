@@ -1,4 +1,5 @@
 import 'package:api_example/features/app/presentation/components/components.dart';
+import 'package:api_example/features/app/presentation/themes/themes.dart';
 import 'package:api_example/features/app/router.dart';
 import 'package:api_example/features/users/bloc/user_list.dart';
 import 'package:api_example/features/users/data/models/user.dart';
@@ -12,9 +13,26 @@ class UserListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: SimpleAppBar(title: 'Demo API'),
-      body: UserListInj(UserListView()),
+    final theme = context.watch<AppTheme>();
+    return Scaffold(
+      appBar: SimpleAppBar(
+        title: 'Demo API',
+        actions: [
+          IconButton(
+            onPressed: () {
+              if (theme.styleName == AppStyles.light.name) {
+                context.read<AppTheme>().setStyle(AppStyles.dark.name);
+              } else {
+                context.read<AppTheme>().setStyle(AppStyles.light.name);
+              }
+            },
+            icon: theme.styleName == AppStyles.light.name
+                ? const Icon(Icons.dark_mode)
+                : const Icon(Icons.light_mode),
+          ),
+        ],
+      ),
+      body: const UserListInj(UserListView()),
     );
   }
 }

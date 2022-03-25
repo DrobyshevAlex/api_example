@@ -5,6 +5,7 @@ import 'package:api_example/features/albums/data/datasources/photo_remote.dart';
 import 'package:api_example/features/albums/data/repositories/albums.dart';
 import 'package:api_example/features/albums/data/repositories/photos.dart';
 import 'package:api_example/features/app/bloc/app.dart';
+import 'package:api_example/features/app/presentation/themes/themes.dart';
 import 'package:api_example/features/posts/data/datasource/comments_local.dart';
 import 'package:api_example/features/posts/data/datasource/comments_remote.dart';
 import 'package:api_example/features/posts/data/datasource/local.dart';
@@ -39,8 +40,20 @@ class _AppInjState extends State<AppInj> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocProvider<AppBLoC>(
-        create: (context) => AppBLoC()..add(const AppEvent.init()),
+  Widget build(BuildContext context) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => AppTheme(
+              styleList: {
+                AppStyles.light.name: () => DefaultStyle(),
+                AppStyles.dark.name: () => DarkStyle(),
+              },
+            ),
+          ),
+          BlocProvider<AppBLoC>(
+            create: (context) => AppBLoC()..add(const AppEvent.init()),
+          ),
+        ],
         child: BlocBuilder<AppBLoC, AppState>(
           builder: (context, state) => state.maybeWhen(
             orElse: () => widget.child,

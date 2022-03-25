@@ -4,8 +4,10 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SimpleAppBar({
     Key? key,
     required this.title,
+    this.actions,
   }) : super(key: key);
   final String title;
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +16,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(title),
       titleTextStyle: const TextStyle(fontWeight: FontWeight.bold),
       centerTitle: false,
+      actions: actions,
     );
   }
 
